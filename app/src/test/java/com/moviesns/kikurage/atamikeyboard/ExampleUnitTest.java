@@ -1,4 +1,4 @@
-package com.moviesns.kikurage.atamikeyboard;
+package com.atami.kikurage.atamikeyboard;
 
 import org.junit.Test;
 

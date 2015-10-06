@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryText">#FFF</color>
+    <color name="colorPrimaryDark">#009688</color>
+    <color name="colorPrimaryBackground">#009688</color>
+
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorText">#303030</color>
+    <color name="colorBackground">#F5F5F5</color>
+
+    <color name="colorBaseText">#303030</color>
+    <color name="colorBaseBackground">#F5F5F5</color>
+    <color name="colorBaseBorder">#FFFFFF</color>
+
+    <color name="colorToolBarText">#303030</color>
+    <color name="colorToolBarBackground">#EEEEEE</color>
+    <color name="colorToolBarBorder">#FAFAFA</color>
+
+    <color name="colorCloseButtonText">#FFFFFF</color>
+    <color name="colorCloseButtonBackground">#E53935</color>
 </resources>

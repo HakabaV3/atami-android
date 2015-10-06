@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AtamiKeyboard</string>
-    <string name="simple_ime">Atami Keyboard</string>
-    <string name="subtype_jp">Japanese (JP)</string>
+    <string name="app_name">Atamiキーボード</string>
+    <string name="simple_ime">Atamiキーボード</string>
+    <string name="subtype_jp">日本語</string>
 </resources>

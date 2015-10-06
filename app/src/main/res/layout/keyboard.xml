@@ -1,53 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <TableLayout
-        android:layout_width="300dp"
-        android:layout_height="200dp">
+    android:layout_height="280dp"
+    android:background="@color/colorBaseBackground"
+    android:orientation="vertical">
 
+    <com.atami.kikurage.atamikeyboard.KeyboardNavbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/minTouchTargetHeight"
+        android:layout_weight="0"
+        android:background="@color/colorToolBarBackground" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView2"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView3"
-                android:layout_column="1" />
-        </TableRow>
-    </TableLayout>
 
     <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center_vertical"></GridLayout>
+        android:id="@+id/stampContainer"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:columnCount="3" />
 </LinearLayout>
