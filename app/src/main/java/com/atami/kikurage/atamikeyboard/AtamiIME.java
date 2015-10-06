@@ -17,24 +17,25 @@ import org.jdeferred.DoneCallback;
 public class AtamiIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
 
-    static public AtamiIME instance;
-    private View view;
-    private GridLayout stampContainer;
+    private View mView;
+    private GridLayout mStampContainer;
+    private InputMethodManager mImm;
+    private IBinder mToken;
+    static public AtamiIME sIme;
 
     @Override
     public View onCreateInputView() {
-        view = getLayoutInflater().inflate(R.layout.keyboard, null);
-
-        stampContainer = (GridLayout) view.findViewById(R.id.stampContainer);
-        instance = this;
-        return view;
+        sIme = this;
+        mView = getLayoutInflater().inflate(R.layout.keyboard, null);
+        mStampContainer = (GridLayout) mView.findViewById(R.id.stampContainer);
+        mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mToken = this.getWindow().getWindow().getAttributes().token;
+        return mView;
     }
 
     public boolean switchToLastInputMethod() {
-        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        final IBinder token = this.getWindow().getWindow().getAttributes().token;
 
-        return imm.switchToLastInputMethod(token);
+        return mImm.switchToLastInputMethod(mToken);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class AtamiIME extends InputMethodService
 
         final ImageView image = new ImageView(this.getApplicationContext());
         try {
-            stampContainer.addView(image);
+            mStampContainer.addView(image);
         } catch (Throwable ex) {
             Log.d("Err", ex.toString());
         }

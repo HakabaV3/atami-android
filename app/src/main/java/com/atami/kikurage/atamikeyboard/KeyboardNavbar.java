@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 
 public class KeyboardNavbar extends FrameLayout {
     final String XML_NS_ANDROID = "http://schemas.android.com/apk/res/android";
+    private View mView;
 
     public KeyboardNavbar(Context context) {
         super(context);
@@ -40,10 +41,12 @@ public class KeyboardNavbar extends FrameLayout {
     }
 
     private void setupView(Context context) {
-        final View view = View.inflate(context, R.layout.keyboard_navbar, this);
+        mView = View.inflate(context, R.layout.keyboard_navbar, this);
     }
 
     private void setupAttribute(AttributeSet attrs) {
         if (attrs == null) return;
+
+        //@TODO update view depend on attrs
     }
 }
