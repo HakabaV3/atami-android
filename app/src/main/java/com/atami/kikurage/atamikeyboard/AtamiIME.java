@@ -4,13 +4,15 @@ import android.content.Context;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.KeyboardView;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 
 public class AtamiIME extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener {
+        implements KeyboardView.OnKeyboardActionListener, StampActionDelegate {
 
     static public AtamiIME sIme;
     private View mView;
@@ -25,6 +27,7 @@ public class AtamiIME extends InputMethodService
         mView = getLayoutInflater().inflate(R.layout.keyboard, null);
         mGirdView = (GridView) mView.findViewById(R.id.stampContainer);
         mAdapter = new StampAdapter(this);
+        mAdapter.setDelegate(this);
         mGirdView.setAdapter(mAdapter);
         mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mToken = this.getWindow().getWindow().getAttributes().token;
@@ -88,4 +91,10 @@ public class AtamiIME extends InputMethodService
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onClickListener(Stamp stamp) {
+        Log.d("AtamiIME", stamp.url);
+        InputConnection ic = getCurrentInputConnection();
+        ic.commitText(stamp.url, stamp.url.length());
+    }
 }
