@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AtamiTheme.KeyBoard"
     android:layout_width="match_parent"
-    android:layout_height="280dp"
-    android:background="@color/colorBaseBackground"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <com.atami.kikurage.atamikeyboard.KeyboardNavbar
         android:layout_width="match_parent"
-        android:layout_height="@dimen/minTouchTargetHeight"
-        android:layout_weight="0"
-        android:background="@color/colorToolBarBackground" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:nestedScrollingEnabled="false" />
 
-
-    <GridLayout
+    <GridView
         android:id="@+id/stampContainer"
         android:layout_width="match_parent"
-        android:layout_height="216dp"
-        android:columnCount="3" />
+        android:layout_height="250dp"
+        android:numColumns="3" />
 </LinearLayout>

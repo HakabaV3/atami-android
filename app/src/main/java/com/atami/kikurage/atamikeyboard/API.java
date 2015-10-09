@@ -6,6 +6,7 @@ package com.atami.kikurage.atamikeyboard;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,70 +16,112 @@ import org.apache.http.util.EntityUtils;
 import org.jdeferred.Deferred;
 import org.jdeferred.DeferredManager;
 import org.jdeferred.DonePipe;
+import org.jdeferred.FailCallback;
 import org.jdeferred.Promise;
-import org.jdeferred.impl.DefaultDeferredManager;
+import org.jdeferred.android.AndroidDeferredManager;
 import org.jdeferred.impl.DeferredObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Callable;
 
 public class API {
 
-    static private DonePipe<HttpResponse, JSONObject, Throwable, Void> jsonFilter;
-    static private DonePipe<HttpResponse, JSONArray, Throwable, Void> jsonArrayFilter;
-    static private DonePipe<HttpResponse, Bitmap, Throwable, Void> bitmapParser;
+    static private DonePipe<String, JSONObject, Throwable, Void> jsonFilter;
+    static private DonePipe<String, JSONArray, Throwable, Void> jsonArrayFilter;
     static private DeferredManager ddm;
 
-    static Promise<HttpResponse, Throwable, Void> pGet(final String url) {
+    static Promise<String, Throwable, Void> pGet(final String url) {
+        Log.d("API", "GET: " + url);
+
         return getDDM()
-                .when(new Callable<HttpResponse>() {
+                .when(new Callable<String>() {
                     @Override
-                    public HttpResponse call() throws Exception {
+                    public String call() throws Exception {
                         HttpClient client = new DefaultHttpClient();
                         HttpGet httpGet = new HttpGet(url);
                         HttpResponse response;
                         response = client.execute(httpGet);
 
-                        return response;
+                        Log.d("API", "pGet success: " + url);
+
+                        return EntityUtils.toString(response.getEntity());
+                    }
+                })
+                .fail(new FailCallback<Throwable>() {
+                    @Override
+                    public void onFail(Throwable result) {
+                        Log.d("API", "pGet failed: " + result.getMessage());
                     }
                 });
     }
 
     static Promise<JSONObject, Throwable, Void> pGetJSON(String url) {
         return API.pGet(url)
-                .then(API.getJSONParser());
+                .then(API.getJSONParser())
+                .fail(new FailCallback<Throwable>() {
+                    @Override
+                    public void onFail(Throwable result) {
+                        Log.d("API", "pGetJSON failed: " + result.getMessage());
+                    }
+                });
+
     }
 
     static Promise<JSONArray, Throwable, Void> pGetJSONArray(String url) {
         return API.pGet(url)
-                .then(API.getJSONArrayParser());
+                .then(API.getJSONArrayParser())
+                .fail(new FailCallback<Throwable>() {
+                    @Override
+                    public void onFail(Throwable result) {
+                        Log.d("API", "pGetJSONArray failed: " + result.getMessage());
+                    }
+                });
+
+
     }
 
-    static Promise<Bitmap, Throwable, Void> pGetBitmap(String url) {
-        return API.pGet(url)
-                .then(API.getBitmapParser());
+    static Promise<Bitmap, Throwable, Void> pGetBitmap(final String url) {
+        Log.d("API", "GET: " + url);
+
+        return getDDM()
+                .when(new Callable<Bitmap>() {
+                    @Override
+                    public Bitmap call() throws Exception {
+                        HttpClient client = new DefaultHttpClient();
+                        HttpGet httpGet = new HttpGet(url);
+                        HttpResponse response;
+                        response = client.execute(httpGet);
+                        InputStream is;
+                        is = response.getEntity().getContent();
+                        return BitmapFactory.decodeStream(is);
+                    }
+                })
+                .fail(new FailCallback<Throwable>() {
+                    @Override
+                    public void onFail(Throwable result) {
+                        Log.d("API", "pGetBitmap failed: " + result.getMessage());
+                    }
+                });
+
     }
 
     static private DeferredManager getDDM() {
         if (ddm == null) {
-            ddm = new DefaultDeferredManager();
+            ddm = new AndroidDeferredManager();
         }
         return ddm;
     }
 
-    static private DonePipe<HttpResponse, JSONObject, Throwable, Void> getJSONParser() {
+    static private DonePipe<String, JSONObject, Throwable, Void> getJSONParser() {
         if (jsonFilter == null) {
-            jsonFilter = new DonePipe<HttpResponse, JSONObject, Throwable, Void>() {
+            jsonFilter = new DonePipe<String, JSONObject, Throwable, Void>() {
                 @Override
-                public Deferred<JSONObject, Throwable, Void> pipeDone(HttpResponse response) {
-                    String responseText;
+                public Deferred<JSONObject, Throwable, Void> pipeDone(String response) {
                     JSONObject json;
                     try {
-                        responseText = EntityUtils.toString(response.getEntity(), "UTF-8");
-                        json = new JSONObject(responseText);
+                        json = new JSONObject(response);
                     } catch (Throwable ex) {
                         return new DeferredObject<JSONObject, Throwable, Void>().reject(ex);
                     }
@@ -91,17 +134,15 @@ public class API {
         return jsonFilter;
     }
 
-    static private DonePipe<HttpResponse, JSONArray, Throwable, Void> getJSONArrayParser() {
+    static private DonePipe<String, JSONArray, Throwable, Void> getJSONArrayParser() {
         if (jsonArrayFilter == null) {
-            jsonArrayFilter = new DonePipe<HttpResponse, JSONArray, Throwable, Void>() {
+            jsonArrayFilter = new DonePipe<String, JSONArray, Throwable, Void>() {
                 @Override
-                public Deferred<JSONArray, Throwable, Void> pipeDone(HttpResponse response) {
-                    String responseText;
+                public Deferred<JSONArray, Throwable, Void> pipeDone(String response) {
                     JSONArray json;
 
                     try {
-                        responseText = EntityUtils.toString(response.getEntity(), "UTF-8");
-                        json = new JSONArray(responseText);
+                        json = new JSONArray(response);
                     } catch (Throwable ex) {
                         return new DeferredObject<JSONArray, Throwable, Void>().reject(ex);
                     }
@@ -112,26 +153,5 @@ public class API {
         }
 
         return jsonArrayFilter;
-    }
-
-    static private DonePipe<HttpResponse, Bitmap, Throwable, Void> getBitmapParser() {
-        if (bitmapParser == null) {
-            bitmapParser = new DonePipe<HttpResponse, Bitmap, Throwable, Void>() {
-                @Override
-                public Promise<Bitmap, Throwable, Void> pipeDone(HttpResponse response) {
-                    InputStream is;
-                    try {
-                        is = response.getEntity().getContent();
-                    } catch (IOException ex) {
-                        return new DeferredObject<Bitmap, Throwable, Void>().reject(ex);
-                    }
-                    Bitmap bit = BitmapFactory.decodeStream(is);
-
-                    return new DeferredObject<Bitmap, Throwable, Void>().resolve(bit);
-                }
-            };
-        }
-
-        return bitmapParser;
     }
 }

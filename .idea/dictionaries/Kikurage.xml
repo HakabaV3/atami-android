@@ -2,8 +2,10 @@
   <dictionary name="Kikurage">
     <words>
       <w>atami</w>
+      <w>atamikeyboard</w>
       <w>kikurage</w>
       <w>navbar</w>
+      <w>proxied</w>
     </words>
   </dictionary>
 </component>

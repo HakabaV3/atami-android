@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import org.jdeferred.DoneCallback;
+import org.jdeferred.FailCallback;
+import org.jdeferred.android.AndroidDoneCallback;
+import org.jdeferred.android.AndroidExecutionScope;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class KeyboardItem extends FrameLayout {
     final String XML_NS_ANDROID = "http://schemas.android.com/apk/res/android";
@@ -39,7 +39,7 @@ public class KeyboardItem extends FrameLayout {
         View.inflate(context, R.layout.keyboard_item, this);
 
         mButton = (Button) this.findViewById(R.id.keywordItemButton);
-        this.setOnClickListener(getOnClickListener());
+        mButton.setOnClickListener(getOnClickListener());
     }
 
     private OnClickListener getOnClickListener() {
@@ -47,22 +47,23 @@ public class KeyboardItem extends FrameLayout {
             mClickListener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    API.pGetJSONArray("http://atami.kikurage.xyz/image/search?q=%E3%82%88%E3%81%A4%E3%81%B0")
-                            .then(new DoneCallback<JSONArray>() {
+                    StampManager.getDefaultManager()
+                            .pGetImageSearch("")
+                            .then(new AndroidDoneCallback<JSONArray>() {
                                 @Override
-                                public void onDone(JSONArray stamps) {
-                                    AtamiIME ime = AtamiIME.sIme;
+                                public void onDone(JSONArray result) {
+                                    AtamiIME.sIme.update();
+                                }
 
-                                    try {
-                                        ime.clearStamps();
-                                        for (int i = 0; i < stamps.length(); i++) {
-                                            JSONObject stamp = (JSONObject) stamps.get(i);
-                                            String url = stamp.getString("proxiedUrl");
-                                            ime.appendImageWithURL(url);
-                                        }
-                                    } catch (JSONException ex) {
-                                        Log.d("url", "exception");
-                                    }
+                                @Override
+                                public AndroidExecutionScope getExecutionScope() {
+                                    return AndroidExecutionScope.UI;
+                                }
+                            })
+                            .fail(new FailCallback<Throwable>() {
+                                @Override
+                                public void onFail(Throwable result) {
+                                    Log.d("KeyboardItem", "pGet failed: " + result.getMessage());
                                 }
                             });
                 }
