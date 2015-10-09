@@ -5,5 +5,6 @@
     <dimen name="textSize">14sp</dimen>
     <dimen name="gutter1">8dp</dimen>
     <dimen name="gutter2">16dp</dimen>
-    <dimen name="minTouchTargetHeight">60dp</dimen>
+    <dimen name="minTouchTargetWidth">48dp</dimen>
+    <dimen name="minTouchTargetHeight">48dp</dimen>
 </resources>

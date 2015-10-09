@@ -5,15 +5,6 @@
 
     <Button
         android:id="@+id/keywordItemButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:minHeight="@dimen/minTouchTargetHeight"
-        android:paddingBottom="@dimen/gutter1"
-        android:paddingLeft="@dimen/gutter2"
-        android:paddingRight="@dimen/gutter2"
-        android:paddingTop="@dimen/gutter1"
-        android:text="New Text"
-        android:textColor="@color/colorToolBarText"
-        android:textSize="@dimen/textSize" />
+        style="@style/AtamiTheme.ButtonPrimary"
+        android:text="New Item" />
 </merge>

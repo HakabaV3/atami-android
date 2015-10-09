@@ -1,40 +1,38 @@
 package com.atami.kikurage.atamikeyboard;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.KeyboardView;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-
-import org.jdeferred.DoneCallback;
+import android.widget.GridView;
 
 public class AtamiIME extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
 
+    static public AtamiIME sIme;
     private View mView;
-    private GridLayout mStampContainer;
+    private GridView mGirdView;
     private InputMethodManager mImm;
     private IBinder mToken;
-    static public AtamiIME sIme;
+    private StampAdapter mAdapter;
 
     @Override
     public View onCreateInputView() {
         sIme = this;
         mView = getLayoutInflater().inflate(R.layout.keyboard, null);
-        mStampContainer = (GridLayout) mView.findViewById(R.id.stampContainer);
+        mGirdView = (GridView) mView.findViewById(R.id.stampContainer);
+        mAdapter = new StampAdapter(this);
+        mGirdView.setAdapter(mAdapter);
         mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mToken = this.getWindow().getWindow().getAttributes().token;
+
         return mView;
     }
 
     public boolean switchToLastInputMethod() {
-
         return mImm.switchToLastInputMethod(mToken);
     }
 
@@ -86,25 +84,8 @@ public class AtamiIME extends InputMethodService
 
     }
 
-    public void clearStamps() {
-
+    public void update() {
+        mAdapter.notifyDataSetChanged();
     }
 
-    public void appendImageWithURL(final String url) {
-
-        final ImageView image = new ImageView(this.getApplicationContext());
-        try {
-            mStampContainer.addView(image);
-        } catch (Throwable ex) {
-            Log.d("Err", ex.toString());
-        }
-
-        API.pGetBitmap(url)
-                .then(new DoneCallback<Bitmap>() {
-                    @Override
-                    public void onDone(Bitmap bitmap) {
-                        image.setImageBitmap(bitmap);
-                    }
-                });
-    }
 }
