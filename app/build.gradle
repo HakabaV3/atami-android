@@ -6,17 +6,27 @@ android {
     buildToolsVersion "23.0.1"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId 'com.atami.kikurage.atamikeyboard'
+        applicationId 'com.atami.hakaba.atamikeyboard'
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            debuggable true;
+            versionNameSuffix ".debug"
+            applicationIdSuffix ".debug"
+        }
+
+        inhouse {
+            debuggable false;
+            versionNameSuffix ".inhouse"
+            applicationIdSuffix ".inhouse"
+        }
+
         release {
-            shrinkResources false
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false;
         }
     }
     productFlavors {
