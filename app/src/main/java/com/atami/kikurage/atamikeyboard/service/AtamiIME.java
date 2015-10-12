@@ -1,4 +1,4 @@
-package com.atami.kikurage.atamikeyboard;
+package com.atami.kikurage.atamikeyboard.service;
 
 import android.content.Context;
 import android.inputmethodservice.InputMethodService;
@@ -9,26 +9,35 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.GridView;
+
+import com.atami.kikurage.atamikeyboard.model.Stamp;
+import com.atami.kikurage.atamikeyboard.model.StampAdapter;
+import com.atami.kikurage.atamikeyboard.view.KeyboardBaseView;
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 
 public class AtamiIME extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener, StampActionDelegate {
+        implements KeyboardView.OnKeyboardActionListener, KeyboardBaseView.onKeyboardDelegate, StampAdapter.onStampActionDelegate {
 
     static public AtamiIME sIme;
-    private View mView;
-    private GridView mGirdView;
+    private KeyboardBaseView mView;
     private InputMethodManager mImm;
     private IBinder mToken;
     private StampAdapter mAdapter;
 
     @Override
     public View onCreateInputView() {
+        Fabric.with(this, new Crashlytics());
+
         sIme = this;
-        mView = getLayoutInflater().inflate(R.layout.keyboard, null);
-        mGirdView = (GridView) mView.findViewById(R.id.stampContainer);
+        mView = new KeyboardBaseView(this);
+        mView.setDelegate(this);
+
         mAdapter = new StampAdapter(this);
         mAdapter.setDelegate(this);
-        mGirdView.setAdapter(mAdapter);
+        mView.setAdapter(mAdapter);
+
         mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mToken = this.getWindow().getWindow().getAttributes().token;
 
@@ -87,14 +96,15 @@ public class AtamiIME extends InputMethodService
 
     }
 
-    public void update() {
-        mAdapter.notifyDataSetChanged();
-    }
-
     @Override
-    public void onClickListener(Stamp stamp) {
+    public void onStampSelect(Stamp stamp) {
         Log.d("AtamiIME", stamp.url);
         InputConnection ic = getCurrentInputConnection();
         ic.commitText(stamp.url, stamp.url.length());
+    }
+
+    @Override
+    public void onTabItemSelect() {
+        mAdapter.pGetImageSearch("");
     }
 }

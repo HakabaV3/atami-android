@@ -1,4 +1,4 @@
-package com.atami.kikurage.atamikeyboard;
+package com.atami.kikurage.atamikeyboard.util;
 
 /**
  * @author Kikurage
@@ -26,13 +26,13 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.util.concurrent.Callable;
 
-public class API {
+public class Http {
 
     static private DonePipe<String, JSONObject, Throwable, Void> jsonFilter;
     static private DonePipe<String, JSONArray, Throwable, Void> jsonArrayFilter;
     static private DeferredManager ddm;
 
-    static Promise<String, Throwable, Void> pGet(final String url) {
+    static public Promise<String, Throwable, Void> pGet(final String url) {
         Log.d("API", "GET: " + url);
 
         return getDDM()
@@ -57,9 +57,9 @@ public class API {
                 });
     }
 
-    static Promise<JSONObject, Throwable, Void> pGetJSON(String url) {
-        return API.pGet(url)
-                .then(API.getJSONParser())
+    static public Promise<JSONObject, Throwable, Void> pGetJSON(String url) {
+        return Http.pGet(url)
+                .then(Http.getJSONParser())
                 .fail(new FailCallback<Throwable>() {
                     @Override
                     public void onFail(Throwable result) {
@@ -69,9 +69,9 @@ public class API {
 
     }
 
-    static Promise<JSONArray, Throwable, Void> pGetJSONArray(String url) {
-        return API.pGet(url)
-                .then(API.getJSONArrayParser())
+    static public Promise<JSONArray, Throwable, Void> pGetJSONArray(String url) {
+        return Http.pGet(url)
+                .then(Http.getJSONArrayParser())
                 .fail(new FailCallback<Throwable>() {
                     @Override
                     public void onFail(Throwable result) {
@@ -82,7 +82,7 @@ public class API {
 
     }
 
-    static Promise<Bitmap, Throwable, Void> pGetBitmap(final String url) {
+    static public Promise<Bitmap, Throwable, Void> pGetBitmap(final String url) {
         Log.d("API", "GET: " + url);
 
         return getDDM()

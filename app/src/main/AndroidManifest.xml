@@ -15,7 +15,7 @@
 
         <!-- IME -->
         <service
-            android:name=".AtamiIME"
+            android:name=".service.AtamiIME"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_INPUT_METHOD">
 
@@ -53,7 +53,7 @@
 
         <!-- 画像の選択 -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.StampSelectActivity"
             android:label="@string/app_name">
 
             <intent-filter>
@@ -70,7 +70,9 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2a011f0cf47040a40f47e0739198b9644d37cbcb" />
     </application>
 
 </manifest>

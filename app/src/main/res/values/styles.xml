@@ -5,17 +5,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorForeground">@color/colorForeground</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
     </style>
 
     <style name="AtamiTheme">
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/colorForeground</item>
         <item name="android:textSize">@dimen/textSize</item>
     </style>
 
     <style name="AtamiTheme.KeyBoard" parent="AtamiTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/colorGrey50</item>
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
     <style name="AtamiTheme.TouchTarget" parent="AtamiTheme">
@@ -29,12 +31,36 @@
         <item name="android:padding">@dimen/gutter2</item>
         <item name="android:layout_marginLeft">@dimen/gutter2</item>
         <item name="android:layout_marginRight">@dimen/gutter2</item>
-        <item name="android:scrollHorizontally">false</item>
+        <item name="android:text">New Item</item>
     </style>
 
     <style name="AtamiTheme.ButtonPrimary" parent="AtamiTheme.Button">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textColor">@color/colorPrimaryForeground</item>
+    </style>
+
+    <style name="AtamiTheme.ButtonFlat" parent="AtamiTheme.Button">
+        <item name="android:background">#0000</item>
+    </style>
+
+    <style name="AtamiTheme.ButtonFlatPrimary" parent="AtamiTheme.ButtonFlat">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AtamiTheme.StampGrid" parent="AtamiTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:numColumns">3</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="AtamiTheme.NavBar" parent="AtamiTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/minTouchTargetHeight</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:background">@color/colorGrey50</item>
     </style>
 
 </resources>
