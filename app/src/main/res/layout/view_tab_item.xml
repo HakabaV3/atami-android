@@ -4,7 +4,6 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:id="@+id/keywordItemButton"
-        style="@style/AtamiTheme.ButtonPrimary"
-        android:text="New Item" />
+        android:id="@+id/button"
+        style="@style/AtamiTheme.ButtonFlat" />
 </merge>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.atami.kikurage.atamikeyboard.view.NavBarView
+        android:id="@+id/navbar"
+        style="@style/AtamiTheme.NavBar" />
+
+    <com.atami.kikurage.atamikeyboard.view.StampGridView
+        android:id="@+id/stampGrid"
+        style="@style/AtamiTheme.StampGrid" />
+
+</LinearLayout>

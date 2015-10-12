@@ -1,4 +1,4 @@
-package com.atami.kikurage.atamikeyboard;
+package com.atami.kikurage.atamikeyboard.model;
 
 import android.graphics.Bitmap;
 

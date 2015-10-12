@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
-    <color name="colorPrimaryText">#FFF</color>
-    <color name="colorPrimaryBackground">#009688</color>
-
+    <color name="colorPrimary">@color/colorTeal500</color>
+    <color name="colorPrimaryDark">@color/colorTeal700</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorText">#303030</color>
+    <color name="colorPrimaryForeground">@color/colorGrey50</color>
+    <color name="colorPrimaryBackground">@color/colorPrimary</color>
+    <color name="colorBackground">@color/colorBlueGrey50</color>
+    <color name="colorForeground">@color/colorGrey600</color>
 
     <color name="colorGrey50">#FAFAFA</color>
     <color name="colorGrey100">#F5F5F5</color>
@@ -19,4 +19,26 @@
     <color name="colorGrey700">#616161</color>
     <color name="colorGrey800">#424242</color>
     <color name="colorGrey900">#212121</color>
+
+    <color name="colorTeal50">#E0F2F1</color>
+    <color name="colorTeal100">#B2DFDB</color>
+    <color name="colorTeal200">#80CBC4</color>
+    <color name="colorTeal300">#4DB6AC</color>
+    <color name="colorTeal400">#26A69A</color>
+    <color name="colorTeal500">#009688</color>
+    <color name="colorTeal600">#00897B</color>
+    <color name="colorTeal700">#00796B</color>
+    <color name="colorTeal800">#00695C</color>
+    <color name="colorTeal900">#004D40</color>
+
+    <color name="colorBlueGrey50">#ECEFF1</color>
+    <color name="colorBlueGrey100">#CFD8DC</color>
+    <color name="colorBlueGrey200">#B0BEC5</color>
+    <color name="colorBlueGrey300">#90A4AE</color>
+    <color name="colorBlueGrey400">#78909C</color>
+    <color name="colorBlueGrey500">#607D8B</color>
+    <color name="colorBlueGrey600">#546E7A</color>
+    <color name="colorBlueGrey700">#455A64</color>
+    <color name="colorBlueGrey800">#37474F</color>
+    <color name="colorBlueGrey900">#263238</color>
 </resources>
