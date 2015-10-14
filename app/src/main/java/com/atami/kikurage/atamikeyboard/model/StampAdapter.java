@@ -1,6 +1,7 @@
 package com.atami.kikurage.atamikeyboard.model;
 
 import android.content.Context;
+import android.content.Loader;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
 import com.atami.kikurage.atamikeyboard.R;
+import com.atami.kikurage.atamikeyboard.loader.ImageLoader;
 import com.atami.kikurage.atamikeyboard.util.Http;
 import com.atami.kikurage.atamikeyboard.view.StampView;
 
@@ -31,6 +33,7 @@ public class StampAdapter extends BaseAdapter {
         void onStampSelect(Stamp stamp);
     }
 
+    private Context mContext;
     private onStampActionDelegate mDelegate;
     private ArrayList<Stamp> mStamps;
     private LayoutInflater mInflater;
@@ -38,9 +41,42 @@ public class StampAdapter extends BaseAdapter {
     private class ViewHolder {
         StampView image;
         Stamp stamp;
+        BitmapLoader loader;
+    }
+
+    private class BitmapLoader implements Loader.OnLoadCompleteListener<Bitmap> {
+        private Stamp mStamp;
+        private StampView mStampView;
+        private ImageLoader mLoader;
+        private int mId;
+
+        public BitmapLoader(int id, Stamp stamp, StampView view) {
+            mStamp = stamp;
+            mStampView = view;
+            mId = id;
+        }
+
+        public void start() {
+            Log.d("StampAdapter", "Loading");
+
+            mLoader = new ImageLoader(mContext, mStamp.proxiedUrl);
+            mLoader.registerListener(mId, this);
+            mLoader.forceLoad();
+        }
+
+        @Override
+        public void onLoadComplete(Loader<Bitmap> loader, Bitmap bitmap) {
+            loader.unregisterListener(this);
+            Log.d("StampAdapter", "Loaded!");
+
+            mStamp.bitmap = bitmap;
+            mStampView.setImageBitmap(bitmap);
+            mLoader = null;
+        }
     }
 
     public StampAdapter(Context context) {
+        mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mStamps = new ArrayList<>();
     }
@@ -119,21 +155,14 @@ public class StampAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.image.setImageResource(R.mipmap.ic_placeholder);
+        if (stamp.bitmap == null) {
+            holder.image.setImageResource(R.mipmap.ic_placeholder);
+            holder.loader = new BitmapLoader(position, stamp, holder.image);
+            holder.loader.start();
+        } else {
+            holder.image.setImageBitmap(stamp.bitmap);
+        }
         holder.stamp = stamp;
-
-        Http.pGetBitmap(stamp.url)
-                .then(new AndroidDoneCallback<Bitmap>() {
-                    @Override
-                    public AndroidExecutionScope getExecutionScope() {
-                        return AndroidExecutionScope.UI;
-                    }
-
-                    @Override
-                    public void onDone(Bitmap bitmap) {
-                        holder.image.setImageBitmap(bitmap);
-                    }
-                });
 
         return convertView;
     }

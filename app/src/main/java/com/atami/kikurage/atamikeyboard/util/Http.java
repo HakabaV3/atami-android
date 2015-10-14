@@ -4,8 +4,6 @@ package com.atami.kikurage.atamikeyboard.util;
  * @author Kikurage
  */
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -23,7 +21,6 @@ import org.jdeferred.impl.DeferredObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.concurrent.Callable;
 
 public class Http {
@@ -79,31 +76,6 @@ public class Http {
                     }
                 });
 
-
-    }
-
-    static public Promise<Bitmap, Throwable, Void> pGetBitmap(final String url) {
-        Log.d("API", "GET: " + url);
-
-        return getDDM()
-                .when(new Callable<Bitmap>() {
-                    @Override
-                    public Bitmap call() throws Exception {
-                        HttpClient client = new DefaultHttpClient();
-                        HttpGet httpGet = new HttpGet(url);
-                        HttpResponse response;
-                        response = client.execute(httpGet);
-                        InputStream is;
-                        is = response.getEntity().getContent();
-                        return BitmapFactory.decodeStream(is);
-                    }
-                })
-                .fail(new FailCallback<Throwable>() {
-                    @Override
-                    public void onFail(Throwable result) {
-                        Log.d("API", "pGetBitmap failed: " + result.getMessage());
-                    }
-                });
 
     }
 

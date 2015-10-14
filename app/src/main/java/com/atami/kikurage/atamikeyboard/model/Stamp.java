@@ -12,7 +12,7 @@ public class Stamp {
     public String url;
     public String proxiedUrl;
     public String id;
-    public Bitmap bitmap;
+    public Bitmap bitmap = null;
 
     public Stamp(JSONObject stampData) throws JSONException {
         url = stampData.getString("url");
